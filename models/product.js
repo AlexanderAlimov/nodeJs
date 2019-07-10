@@ -55,4 +55,16 @@ module.exports = class Product {
       } )
     })
   }
+
+  static editProduct(id){
+    getProductsFromFile(products => {
+      console.log(66666666);
+      console.log(id);
+      console.log(7777777777777);
+      console.log(products);
+      const product = products.find(item=>item.id === id);
+      console.log(8888888888);
+      console.log(product);
+    })
+  }
 };
