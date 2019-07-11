@@ -56,15 +56,24 @@ module.exports = class Product {
     })
   }
 
-  static editProduct(id){
+  static editProduct(id,title,imageUrl,price,description){
     getProductsFromFile(products => {
       console.log(66666666);
       console.log(id);
       console.log(7777777777777);
       console.log(products);
-      const product = products.find(item=>item.id === id);
-      console.log(8888888888);
-      console.log(product);
+			const productIndex = products.findIndex(item=>item.id === id);
+			const updatedProduct = {
+				id: id,
+				title: title,
+				imageUrl: imageUrl,
+				price: price,
+				description: description
+			}
+			products.splice(productIndex,1,updatedProduct);
+			fs.writeFile(p, JSON.stringify(products), err => {
+        console.log(err);
+      } )
     })
   }
 };

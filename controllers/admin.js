@@ -48,7 +48,7 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.id;
   console.log(5555555);
   console.log(req.body.id);
-  Product.editProduct(prodId);
+  Product.editProduct(prodId,title,imageUrl,price,description);
   // const product = new Product(title, imageUrl, description, price);
   // product.save();
   res.redirect('/');
