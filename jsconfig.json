@@ -1,0 +1,17 @@
+{
+  "typeAcquisition": {
+    "include": [
+        "express",
+        "sequelize",
+        "node",
+        "mysql2"
+    ]
+},
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs"
+    },
+    "exclude": [
+      "node_modules"
+    ]
+}

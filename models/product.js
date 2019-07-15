@@ -1,79 +1,28 @@
-const fs = require('fs');
-const path = require('path');
+const Sequelize = require('sequelize');
 
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  'data',
-  'products.json'
-);
+const sequelize = require('../util/database');
 
-const getProductsFromFile = cb => {
-  fs.readFile(p, (err, fileContent) => {
-    if (err) {
-      cb([]);
-    } else {
-      cb(JSON.parse(fileContent));
-    }
-  });
-};
-
-module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-    this.id;
+const Product = sequelize.define('product',{
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement:  true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  imageUrl: {
+    type:Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull:false
   }
+})
 
-  save() {
-    this.id = Math.random().toString();
-    getProductsFromFile(products => {
-      products.push(this);
-      fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      });
-    });
-  }
+module.exports = Product;
 
-  static findById(id,cb) {
-    getProductsFromFile(products=>{
-      const product = products.find(p=>id===p.id);
-      cb(product);
-    });
-  }
-
-  static fetchAll(cb) {
-    getProductsFromFile(cb);
-  }
-
-  static remove(id){
-    getProductsFromFile(products => {
-      products = products.filter(product => id !== product.id);
-      fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      } )
-    })
-  }
-
-  static editProduct(id,title,imageUrl,price,description){
-    getProductsFromFile(products => {
-      console.log(66666666);
-      console.log(id);
-      console.log(7777777777777);
-      console.log(products);
-			const productIndex = products.findIndex(item=>item.id === id);
-			const updatedProduct = {
-				id: id,
-				title: title,
-				imageUrl: imageUrl,
-				price: price,
-				description: description
-			}
-			products.splice(productIndex,1,updatedProduct);
-			fs.writeFile(p, JSON.stringify(products), err => {
-        console.log(err);
-      } )
-    })
-  }
-};
