@@ -5,17 +5,23 @@
         <%- include('../includes/navigation.ejs') %>
         <main>
                 <% if (prods.length > 0) { %>
-                    <div>
+                    <div class="centered">
                         <% for (let item of prods) { %>
-                          <p class="product__title"><%= item.title %> - ( <%=item.qty%> )</p>
-                          <form action="/cart-delete" method="POST">
-                            <input type="hidden" value="<%= item.id%>" name="id">
-                            <input type="hidden" value="<%= item.price%>" name="price">
-                            <input type="hidden" value="<%= item.qty%>" name="qty">
-                            <button class="btn" type="submit">Delete</button>
-                          </form>
+                          <div class="item__row">
+                            <p class="product__title"> <span class="item__row-title">Product :</span>  <%= item.title %>   <span class="item__row-title">Quantity :</span> <%=item.cartItem.quantity%></p>
+                            <form action="/cart-delete" method="POST">
+                              <input type="hidden" value="<%= item.id%>" name="id">
+                              <input type="hidden" value="<%= item.price%>" name="price">
+                              <input type="hidden" value="<%= item.quantity%>" name="qty">
+                              <button class="btn btn-item__row" type="submit">Delete</button>
+                            </form>
+                          </div>
                         <% } %>
                     </div>
+                    <hr>
+                    <form action="/create-order" method="POST" class="centered">
+                      <button type="submit" class="btn">Order Now!</button>
+                    </form>
                 <% } else { %>
                     <h1>No Products in Cart Found!</h1>
                 <% } %>
