@@ -41,7 +41,13 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title,price,description,imageUrl,null,req.user._id);
+  const product = new Product({
+    title,
+    imageUrl,
+    price,
+    description,
+    userId: req.user
+  });
 
   product.save()
   .then((result)=>{
@@ -61,24 +67,25 @@ exports.postEditProduct = (req, res, next) => {
   const description = req.body.description;
   const prodId = req.body.id;
   console.log("Start Update!!!!");
-  Product.update(prodId,{
-    title,
-    imageUrl,
-    price,
-    description
+  Product.update({ _id: prodId }, {
+    $set: {
+      title,
+      imageUrl,
+      price,
+      description
+    }
   })
-  .then(()=>{
-    res.redirect('/');
-  })
-  .catch(error=>{
-    console.log(error);
-  })
-  
+    .then(() => {
+      res.redirect('/');
+    })
+    .catch(error => {
+      console.log(error);
+    })
 };
 
 exports.getProducts = (req, res, next) => {
   // req.user.getProducts()
-  Product.fetchAll()
+  Product.find()
   .then((products)=>{
     res.render('admin/products', {
       prods: products,
@@ -93,7 +100,7 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.removeProduct = (req, res, next) => {
-  Product.delete(req.body.id)
+  Product.remove({_id: req.body.id})
   .then(() => {
     console.log("Done");
     res.redirect('/');
